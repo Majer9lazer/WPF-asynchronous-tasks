@@ -43,12 +43,12 @@
                             <Label Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,1,1" BorderBrush="Black" >Result of Task 1</Label>
                             <Border Grid.Row="3" BorderThickness="0,0,1,1" BorderBrush="Black">
                                 <ScrollViewer x:Name="ResultsOfTask1ScrollViewer">
-                                    <TextBlock x:Name="ResultOfTask1TextBlock"  ></TextBlock>
+                                    <TextBlock x:Name="ResultOfTask1TextBlock" TextWrapping="Wrap"  ></TextBlock>
                                 </ScrollViewer>
 
                             </Border>
                             <Grid Grid.Row="4">
-                                <ProgressBar x:Name="Task1ProgressBar"></ProgressBar>
+                                <ProgressBar BorderThickness="0,0,1,0" BorderBrush="Black" x:Name="Task1ProgressBar"></ProgressBar>
                             </Grid>
                         </Grid>
                     </Border>

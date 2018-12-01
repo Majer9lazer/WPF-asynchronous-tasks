@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,17 +34,41 @@ namespace UI
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Log("Started task 1...");
+                Start_Task_1();
+                Log("Started to write to file factorial value ...");
 
+            }
+            catch (Exception ex)
+            {
+                ErrorLogTextBlock.Text += $"Exception = {ex}\n";
+            }
+        }
 
-
-            if (int.TryParse(FactorialInput.Text, out int val))
+        private void Log(string text)
+        {
+            Task.Run(() =>
+            {
+                ErrorLogTextBlock.Dispatcher.InvokeAsync(() =>
+                {
+                    ErrorLogTextBlock.Text += $" {text}\n";
+                });
+            });
+        }
+        private void Start_Task_1()
+        {
+            if (byte.TryParse(FactorialInput.Text, out byte val))
             {
                 if (_worker.CheckTask1Val(val))
                 {
-                    ResultOfTask1TextBlock.Dispatcher.InvokeAsync(() =>
-                        {
-                            ResultOfTask1TextBlock.Text = _worker.Factorial((uint)val).ToString();
-                        });
+                    Task1ProgressBar.Maximum = val;
+                    Task<BigInteger> task = new Task<BigInteger>(() => GetFactorialInfo(val));
+                    task.Start();
+
+
+                
                 }
                 else
                 {
@@ -52,6 +79,37 @@ namespace UI
             {
                 MessageBox.Show("Warning your input data contains string");
             }
+
+
         }
+        private BigInteger GetFactorialInfo(byte val)
+        {
+            for (byte i = 1; i <= val; i++)
+            {
+                ResultOfTask1TextBlock.Dispatcher.InvokeAsync(() =>
+                {
+                    ResultOfTask1TextBlock.Text += $"!{i} = {Factorial(i)}\n";
+                });
+                ResultsOfTask1ScrollViewer.Dispatcher.InvokeAsync(() =>
+                {
+                    ResultsOfTask1ScrollViewer.ScrollToBottom();
+                });
+                Task1ProgressBar.Dispatcher.InvokeAsync(() => { Task1ProgressBar.Value = i; });
+                Task.Run(() => FileWriter.WriteToFileFactorial(Factorial(i), i));
+                Thread.Sleep(50);
+            }
+
+            return Factorial(val);
+        }
+        private BigInteger Factorial(BigInteger n)
+        {
+            if (n == 0)
+                return 0;
+            if (n == 1)
+                return 1;
+
+            return n * Factorial(n - 1);
+        }
+
     }
 }

@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\FileWriter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ShowResultHelpers\ShowResultHelper.cs" />
     <Compile Include="ShowResultHelpers\Task1ShowResultHelper.cs" />
@@ -98,6 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Files\Factorial_log.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
