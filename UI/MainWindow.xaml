@@ -1,0 +1,71 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="750" Width="1280">
+    <Grid Margin="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button  x:Name="StartButton" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="50" Padding="5" FontSize="16" Background="#FF55E435" Click="StartButton_Click">Start</Button>
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Border  BorderBrush="Black" BorderThickness="1,1,0,0">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition MaxHeight="35"></RowDefinition>
+                                <RowDefinition MaxHeight="50"></RowDefinition>
+                                <RowDefinition MaxHeight="35"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition MaxHeight="35"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label FontSize="18" BorderThickness="0,0,1,0" BorderBrush="Black" Grid.Row="0" HorizontalContentAlignment="Center">Task 2</Label>
+
+                            <Grid  Grid.Row="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" BorderThickness="0,1,0,1" BorderBrush="Black" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" >Write here a single integer from 1 to 100</Label>
+                                <TextBox Grid.Column="1" BorderBrush="Red" BorderThickness="1"  x:Name="FactorialInput" Text="1"  TextAlignment="Center" VerticalContentAlignment="Center"></TextBox>
+                            </Grid>
+
+                            <Label Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,1,1" BorderBrush="Black" >Result of Task 1</Label>
+                            <Border Grid.Row="3" BorderThickness="0,0,1,1" BorderBrush="Black">
+                                <ScrollViewer x:Name="ResultsOfTask1ScrollViewer">
+                                    <TextBlock x:Name="ResultOfTask1TextBlock"  ></TextBlock>
+                                </ScrollViewer>
+
+                            </Border>
+                            <Grid Grid.Row="4">
+                                <ProgressBar x:Name="Task1ProgressBar"></ProgressBar>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+        <Grid  Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition MaxHeight="35"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0">
+                <TextBlock x:Name="ErrorLogTextBlock"  Background="AliceBlue"></TextBlock>
+            </ScrollViewer>
+            <ProgressBar Grid.Row="1" x:Name="AllTaskProgressBar"></ProgressBar>
+        </Grid>
+
+
+    </Grid>
+</Window>
