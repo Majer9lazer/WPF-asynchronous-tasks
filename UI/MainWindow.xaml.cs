@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Logic;
 
 namespace UI
 {
@@ -20,15 +21,37 @@ namespace UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ThreadWorker _worker;
         public MainWindow()
         {
             InitializeComponent();
-           
+            _worker = new ThreadWorker();
+
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
 
+
+
+            if (int.TryParse(FactorialInput.Text, out int val))
+            {
+                if (_worker.CheckTask1Val(val))
+                {
+                    ResultOfTask1TextBlock.Dispatcher.InvokeAsync(() =>
+                        {
+                            ResultOfTask1TextBlock.Text = _worker.Factorial((uint)val).ToString();
+                        });
+                }
+                else
+                {
+                    MessageBox.Show("Warning your number doesn't match the expression");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Warning your input data contains string");
+            }
         }
     }
 }
