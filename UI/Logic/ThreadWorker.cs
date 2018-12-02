@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UI.Annotations;
 
@@ -15,7 +16,7 @@ namespace UI.Logic
     {
         public void Start()
         {
-
+           
         }
 
         public bool CheckTask1Val(byte val)
@@ -26,4 +27,5 @@ namespace UI.Logic
         
 
     }
+
 }

@@ -100,9 +100,25 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Files\Convert_to_military.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Files\Factorial_log.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors">
+      <Version>1.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialDesignThemes">
+      <Version>2.5.1-ci1255</Version>
+    </PackageReference>
+    <PackageReference Include="ShowMeTheXAML.AvalonEdit">
+      <Version>1.0.11</Version>
+    </PackageReference>
+    <PackageReference Include="ShowMeTheXAML.MSBuild">
+      <Version>1.0.11</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

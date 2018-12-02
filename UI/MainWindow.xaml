@@ -4,15 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
+        xmlns:showMeTheXaml="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1280">
-    <Grid Margin="1">
-        <Grid.RowDefinitions>
+        Title="MainWindow" Height="750" Width="1280"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition ></RowDefinition>
             <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button  x:Name="StartButton" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="50" Padding="5" FontSize="16" Background="#FF55E435" Click="StartButton_Click">Start</Button>
+        <Button IsDefault="True" x:Name="StartButton" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="50" Padding="5" FontSize="16" Background="#FF55E435" Click="StartButton_Click">Start</Button>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -29,7 +47,11 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition MaxHeight="35"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label FontSize="18" BorderThickness="0,0,1,0" BorderBrush="Black" Grid.Row="0" HorizontalContentAlignment="Center">Task 2</Label>
+                            <Label FontSize="18"
+                                   BorderThickness="0,0,1,0" 
+                                   BorderBrush="Black"
+                                   VerticalContentAlignment="Center" Grid.Row="0"
+                                   HorizontalContentAlignment="Center">Task 2</Label>
 
                             <Grid  Grid.Row="1" >
                                 <Grid.ColumnDefinitions>
@@ -53,6 +75,18 @@
                         </Grid>
                     </Border>
                 </Grid>
+                <Grid Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MaxHeight="35"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" FontSize="18"  
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           BorderThickness="0,0,0,0" 
+                           BorderBrush="Black"
+                           >Task 2</Label>
+                    <DatePickerTextBox Text="07:45:00 PM" Grid.Row="1" x:Name="TimeToConvertDatePicker"></DatePickerTextBox>
+                </Grid>
             </Grid>
         </Border>
         <Grid  Grid.Row="2">
@@ -64,6 +98,170 @@
                 <TextBlock x:Name="ErrorLogTextBlock"  Background="AliceBlue"></TextBlock>
             </ScrollViewer>
             <ProgressBar Grid.Row="1" x:Name="AllTaskProgressBar"></ProgressBar>
+        </Grid>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone
+            Mode="PrimaryDark"
+            Padding="16"
+            CornerRadius="3"
+            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+            Margin="2">
+            <StackPanel
+                Orientation="Horizontal">
+                <ToggleButton IsChecked="False"
+                              x:Name="MenuToggleButton"
+                    Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Margin="16 0 0 0">
+                   Thread work based on Material Design
+                </TextBlock>
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton,Path=IsChecked}" Grid.Row="1">
+            <materialDesign:DrawerHost.LeftDrawerContent >
+                <DockPanel MinWidth="212">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                  DockPanel.Dock="Top"
+                                  HorizontalAlignment="Right" Margin="16"
+                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0"                         
+                    >
+                        <ListBox.Items>
+                            <ListBoxItem>
+                                <TextBlock>Home</TextBlock>
+                            </ListBoxItem>
+                        </ListBox.Items>
+
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+        </materialDesign:DrawerHost>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <materialDesign:Card Grid.Column="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Button
+      Grid.Row="0"
+      Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Bottom"
+      Margin="0 0 16 -20">
+                        <materialDesign:PackIcon
+        Kind="ShareVariant" />
+                    </Button>
+                    <StackPanel
+      Grid.Row="1"
+      Margin="8 24 8 4">
+                        <TextBlock
+        Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+        Margin="0">
+      E.T. the Extra-Terrestrial
+                        </TextBlock>
+                        <Viewbox
+        Margin="0 4 0 8"
+        Height="16"
+        HorizontalAlignment="Left">
+                            <materialDesign:RatingBar
+          Value="3"
+          Orientation="Horizontal"
+          Foreground="Gold"
+          Margin="0" />
+                        </Viewbox>
+                        <TextBlock
+        Style="{StaticResource MaterialDesignBody1TextBlock}"
+        TextWrapping="Wrap"
+        VerticalAlignment="Center">
+      After a gentle alien becomes stranded on Earth, the being is discovered and befriended by a young boy named Elliott.
+                        </TextBlock>
+                    </StackPanel>
+                    <Separator
+      Grid.Row="2"
+      Style="{StaticResource MaterialDesignDarkSeparator}"
+      Margin="8 0 8 0" />
+                    <TextBlock
+      Grid.Row="3"
+      Margin="8 4 8 4"
+      Style="{StaticResource MaterialDesignBody2TextBlock}">
+    Tonight's availability
+                    </TextBlock>
+                    <Grid
+      Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+          Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+        Grid.Column="0"
+        Kind="Clock"
+        VerticalAlignment="Center"
+        Margin="8 4 4 4" />
+                        <ListBox
+        Grid.Column="1"
+        Style="{StaticResource MaterialDesignToolToggleFlatListBox}"
+        SelectedIndex="0"
+        Margin="4 8 8 4">
+                            <ListBox.Resources>
+                                <Style
+            TargetType="{x:Type ListBoxItem}"
+            BasedOn="{StaticResource MaterialDesignToolToggleListBoxItem}">
+                                    <Setter
+              Property="Padding"
+              Value="4 6 4 6" />
+                                </Style>
+                            </ListBox.Resources>
+                            <ListBox.ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+              Text="MaterialDesignFlatToggleListBox" />
+                                    <TextBlock
+              Text="Exclusive selection" />
+                                    <TextBlock
+              Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" />
+                                </StackPanel>
+                            </ListBox.ToolTip>
+                            <ListBoxItem>
+                                <TextBlock
+            Text="18:00" />
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock
+            Text="19:00" />
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock
+            Text="22:00" />
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                    <StackPanel
+      Grid.Row="5">
+                        <Button
+        Style="{StaticResource MaterialDesignFlatButton}"
+        HorizontalAlignment="Left"
+        Margin="8 4 8 8">
+                            RESERVE
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
         </Grid>
 
 
