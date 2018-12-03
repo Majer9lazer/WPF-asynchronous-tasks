@@ -7,7 +7,7 @@
         xmlns:showMeTheXaml="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1280"
+        Title="MainWindow" Height="810" Width="1280"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,6 +15,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        ResizeMode="CanMinimize"
         >
     <Window.Resources>
         <ResourceDictionary>
@@ -111,187 +112,185 @@
             CornerRadius="3"
             materialDesign:ShadowAssist.ShadowDepth="Depth3"
             Margin="2">
-            <StackPanel
-                Orientation="Horizontal">
-                <ToggleButton IsChecked="False"
-                              x:Name="MenuToggleButton"
-                    Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="18"
-                    Margin="16 0 0 0">
-                   Thread work based on Material Design
-                </TextBlock>
-            </StackPanel>
-        </materialDesign:ColorZone>
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton,Path=IsChecked}" Grid.Row="1">
-            <materialDesign:DrawerHost.LeftDrawerContent >
-                <DockPanel MinWidth="212">
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                                  DockPanel.Dock="Top"
-                                  HorizontalAlignment="Right" Margin="16"
-                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0"                         
-                    >
-                        <ListBox.Items>
-                            <ListBoxItem Margin="8 0 8 0">
-                                <TextBlock>Home</TextBlock>
-                            </ListBoxItem>
-                            <ListBoxItem Margin="8 0 8 0">
-                                <TextBlock>Files</TextBlock>
-                            </ListBoxItem>
-                        </ListBox.Items>
+            <TextBlock
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Style="{StaticResource MaterialDesignTitleTextBlock}">
+             Thread work based on material design
+            </TextBlock>
 
-                    </ListBox>
-                </DockPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-        </materialDesign:DrawerHost>
+        </materialDesign:ColorZone>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <!-- floating action button with progress -->
-
-            <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            <StackPanel  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button
+                    Margin="2"
                     x:Name="StartButton"
-                Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                    Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                     Click="Start_To_Work_ButtonClick"
-                  
-                materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
-                materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}">
-                <!-- simple example of toggling/animating pack icon with a data trigger-->
-                <materialDesign:PackIcon
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
+                    materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}">
+                    <!-- simple example of toggling/animating pack icon with a data trigger-->
+                    <materialDesign:PackIcon
                     Height="24"
                     Width="24">
-                    <materialDesign:PackIcon.Style>
-                        <Style
+                        <materialDesign:PackIcon.Style>
+                            <Style
                             TargetType="materialDesign:PackIcon">
-                            <Setter
+                                <Setter
                                 Property="Kind"
                                 Value="ArrowRightDropCircleOutline" />
-                            <Style.Triggers>
-                                <DataTrigger
+                                <Style.Triggers>
+                                    <DataTrigger
                                     Binding="{Binding IsSaveComplete}"
                                     Value="True">
-                                    <Setter
+                                        <Setter
                                         Property="Kind"
                                         Value="Check" />
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
                                                     Storyboard.TargetProperty="Opacity"
                                                     From="0"
                                                     To="1"
                                                     Duration="0:0:0.8" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </materialDesign:PackIcon.Style>
-                </materialDesign:PackIcon>
-            </Button>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                </Button>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignButtonTextBlock}">
+                    Click to Start
+                </TextBlock>
+            </StackPanel>
+
             <materialDesign:Card Margin="4" Grid.Row="1" Grid.Column="0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="1" Margin="8 24 8 4">
-                        <TextBlock Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0">
-                            E.T. the Extra-Terrestrial
-                        </TextBlock>
-                        <Viewbox Margin="0 4 0 8" Height="16" HorizontalAlignment="Left">
-                            <materialDesign:RatingBar Value="3" Orientation="Horizontal" Foreground="Gold" Margin="0" />
-                        </Viewbox>
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" TextWrapping="Wrap" VerticalAlignment="Center">
-                            After a gentle alien becomes stranded on Earth, the being is discovered and befriended by a young boy named Elliott.
-                        </TextBlock>
-                    </StackPanel>
-                    <Separator
-      Grid.Row="2"
-      Style="{StaticResource MaterialDesignDarkSeparator}"
-      Margin="8 0 8 0" />
+
+
+                    <TextBox  Grid.Row="0" Margin="8,4,8,0"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            Text="{Binding FactorialText}"
+                            materialDesign:HintAssist.Hint="Factorial number from 1 to 100" />
+
                     <TextBlock
-      Grid.Row="3"
-      Margin="8 4 8 4"
-      Style="{StaticResource MaterialDesignBody2TextBlock}">
-    Tonight's availability
-                    </TextBlock>
-                    <Grid
-      Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-          Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
-        Grid.Column="0"
-        Kind="Clock"
-        VerticalAlignment="Center"
-        Margin="8 4 4 4" />
-                        <ListBox
-        Grid.Column="1"
-        Style="{StaticResource MaterialDesignToolToggleFlatListBox}"
-        SelectedIndex="0"
-        Margin="4 8 8 4">
-                            <ListBox.Resources>
-                                <Style
-            TargetType="{x:Type ListBoxItem}"
-            BasedOn="{StaticResource MaterialDesignToolToggleListBoxItem}">
-                                    <Setter
-              Property="Padding"
-              Value="4 6 4 6" />
-                                </Style>
-                            </ListBox.Resources>
-                            <ListBox.ToolTip>
-                                <StackPanel>
-                                    <TextBlock
-              Text="MaterialDesignFlatToggleListBox" />
-                                    <TextBlock
-              Text="Exclusive selection" />
-                                    <TextBlock
-              Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" />
-                                </StackPanel>
-                            </ListBox.ToolTip>
-                            <ListBoxItem>
-                                <TextBlock
-            Text="18:00" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock
-            Text="19:00" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock
-            Text="22:00" />
-                            </ListBoxItem>
-                        </ListBox>
-                    </Grid>
-                    <StackPanel
-      Grid.Row="5">
-                        <Button
-        Style="{StaticResource MaterialDesignFlatButton}"
-        HorizontalAlignment="Left"
-        Margin="8 4 8 8">
-                            RESERVE
-                        </Button>
-                    </StackPanel>
+                        Grid.Row="1"
+                        Margin="8 4 8 0"
+                        Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                        HorizontalAlignment="Center">
+                       Task 2 result</TextBlock>
+                    <Separator Grid.Row="2" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8 0 8 0" />
+                    <ScrollViewer Grid.Row="3" CanContentScroll="True" x:Name="Result1ContentScrollViewer">
+                        <TextBlock  MinHeight="350"  Margin="8 4 8 0"
+                                   Text="{Binding Path=Task1ResultText}"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
+                    </ScrollViewer>
+                    <Separator Grid.Row="4" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8,0,8,0"></Separator>
+                    <TextBlock
+                        Grid.Row="5"
+                        Margin="8 4 8 0"
+                        Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                        HorizontalAlignment="Center">
+                       Task 2 action log</TextBlock>
+                    <Separator Grid.Row="6" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8,0,8,0"></Separator>
+                    <TextBox Grid.Row="7"
+                             Margin="8 4 8 4"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                      Height="92"
+                        AcceptsReturn="True"
+                        VerticalScrollBarVisibility="Auto"
+                        SpellCheck.IsEnabled="True"
+                        materialDesign:HintAssist.Hint="Logs..."
+                             Text="{Binding Path=Task1ActionLog}"
+                             materialDesign:HintAssist.IsFloating="True"
+                             >
+                    </TextBox>
                 </Grid>
             </materialDesign:Card>
-            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="AliceBlue"></TextBlock>
+            <materialDesign:Card Margin="4" Grid.Row="1" Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox  Grid.Row="0" Margin="8,4,8,0"
+                        materialDesign:HintAssist.Hint="Time : 09:45:00 PM or click on time-icon"
+                                                materialDesign:HintAssist.IsFloating="True"
+                              AcceptsReturn="True"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                Text="{Binding Path=TimeToConvertInput}"
+                        x:Name="WithSecondsTimePicker"/>
+                  
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="8 4 8 0"
+                        Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                        HorizontalAlignment="Center">
+                       Task 3 result</TextBlock>
+                    <Separator Grid.Row="2" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8 0 8 0" />
+                    <ScrollViewer Grid.Row="3" CanContentScroll="True" x:Name="Result2ContentScrollViewer">
+                        <TextBlock  MinHeight="350"  Margin="8 4 8 0"
+                                   Text="{Binding Path=Task2ResultText}"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
+                    </ScrollViewer>
+                    <Separator Grid.Row="4" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8,0,8,0"></Separator>
+                    <TextBlock
+                        Grid.Row="5"
+                        Margin="8 4 8 0"
+                        Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                        HorizontalAlignment="Center">
+                       Task 3 action log</TextBlock>
+                    <Separator Grid.Row="6" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8,0,8,0"></Separator>
+                    <TextBox Grid.Row="7"
+                             Margin="8 4 8 4"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                      Height="92"
+                        AcceptsReturn="True"
+                        VerticalScrollBarVisibility="Auto"
+                        SpellCheck.IsEnabled="True"
+                        materialDesign:HintAssist.Hint="Logs..."
+                             Text="{Binding Path=Task2ActionLog}"
+                             materialDesign:HintAssist.IsFloating="True"
+                             >
+                    </TextBox>
+                </Grid>
+            </materialDesign:Card>
         </Grid>
     </Grid>
 </Window>

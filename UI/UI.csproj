@@ -56,10 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\FactorialHelper.cs" />
     <Compile Include="Logic\FileWriter.cs" />
+    <Compile Include="Logic\TimeConvertHelper.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ShowResultHelpers\ShowResultHelper.cs" />
-    <Compile Include="ShowResultHelpers\Task1ShowResultHelper.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,8 +121,6 @@
       <Version>1.0.11</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

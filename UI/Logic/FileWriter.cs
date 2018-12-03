@@ -4,23 +4,32 @@ using System.Numerics;
 
 namespace UI.Logic
 {
-    public static class FileWriter
+    public class FileWriter
     {
         private static readonly FileInfo FactorialLogPath = new FileInfo(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.FullName + "/Files/Factorial_log.txt");
-        private static readonly FileInfo ConvertToMilitaryPath = new FileInfo(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.FullName + "/Files/Convert_to_military.txt.txt");
+        private static readonly FileInfo ConvertToMilitaryPath = new FileInfo(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.FullName + "/Files/Convert_to_military.txt");
+        public static object O= new object();
         public static void WriteToFileFactorial(BigInteger val, byte numOfFactorial)
         {
-            using (StreamWriter stream = new StreamWriter(FactorialLogPath.FullName, true))
+            lock (O)
             {
-                stream.WriteLine($"User = {Environment.UserName} , factorialNumber = {numOfFactorial} , value = {val}, time = {DateTime.Now}");
+                using (StreamWriter stream = new StreamWriter(FactorialLogPath.FullName, true))
+                {
+                    stream.WriteLine($"User = {Environment.UserName} , factorialNumber = {numOfFactorial} , value = {val}, time = {DateTime.Now}");
+                }
             }
+       
         }
         public static void WriteToFileConvertedDate(string originalDate, string convertedDate)
         {
-            using (StreamWriter stream = new StreamWriter(FactorialLogPath.FullName, true))
+            lock (O)
             {
-                stream.WriteLine($"User = {Environment.UserName} , {nameof(originalDate)} = {originalDate} , {nameof(convertedDate)} = {convertedDate}, time = {DateTime.Now}");
+                using (StreamWriter stream = new StreamWriter(ConvertToMilitaryPath.FullName, true))
+                {
+                    stream.WriteLine($"User = {Environment.UserName} , {nameof(originalDate)} = {originalDate} , {nameof(convertedDate)} = {convertedDate}, time = {DateTime.Now}");
+                }
             }
+          
         }
     }
 }
