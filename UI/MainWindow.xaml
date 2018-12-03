@@ -8,7 +8,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1280"
-
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
@@ -19,6 +20,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -132,8 +134,11 @@
                     <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0"                         
                     >
                         <ListBox.Items>
-                            <ListBoxItem>
+                            <ListBoxItem Margin="8 0 8 0">
                                 <TextBlock>Home</TextBlock>
+                            </ListBoxItem>
+                            <ListBoxItem Margin="8 0 8 0">
+                                <TextBlock>Files</TextBlock>
                             </ListBoxItem>
                         </ListBox.Items>
 
@@ -142,11 +147,59 @@
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <materialDesign:Card Grid.Column="0">
+            <!-- floating action button with progress -->
+
+            <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                    x:Name="StartButton"
+                Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                    Click="Start_To_Work_ButtonClick"
+                  
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
+                materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}">
+                <!-- simple example of toggling/animating pack icon with a data trigger-->
+                <materialDesign:PackIcon
+                    Height="24"
+                    Width="24">
+                    <materialDesign:PackIcon.Style>
+                        <Style
+                            TargetType="materialDesign:PackIcon">
+                            <Setter
+                                Property="Kind"
+                                Value="ArrowRightDropCircleOutline" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsSaveComplete}"
+                                    Value="True">
+                                    <Setter
+                                        Property="Kind"
+                                        Value="Check" />
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="0"
+                                                    To="1"
+                                                    Duration="0:0:0.8" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </materialDesign:PackIcon.Style>
+                </materialDesign:PackIcon>
+            </Button>
+            <materialDesign:Card Margin="4" Grid.Row="1" Grid.Column="0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35" />
@@ -156,39 +209,15 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-
-                    <Button
-      Grid.Row="0"
-      Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Bottom"
-      Margin="0 0 16 -20">
-                        <materialDesign:PackIcon
-        Kind="ShareVariant" />
-                    </Button>
-                    <StackPanel
-      Grid.Row="1"
-      Margin="8 24 8 4">
-                        <TextBlock
-        Style="{StaticResource MaterialDesignSubheadingTextBlock}"
-        Margin="0">
-      E.T. the Extra-Terrestrial
+                    <StackPanel Grid.Row="1" Margin="8 24 8 4">
+                        <TextBlock Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="0">
+                            E.T. the Extra-Terrestrial
                         </TextBlock>
-                        <Viewbox
-        Margin="0 4 0 8"
-        Height="16"
-        HorizontalAlignment="Left">
-                            <materialDesign:RatingBar
-          Value="3"
-          Orientation="Horizontal"
-          Foreground="Gold"
-          Margin="0" />
+                        <Viewbox Margin="0 4 0 8" Height="16" HorizontalAlignment="Left">
+                            <materialDesign:RatingBar Value="3" Orientation="Horizontal" Foreground="Gold" Margin="0" />
                         </Viewbox>
-                        <TextBlock
-        Style="{StaticResource MaterialDesignBody1TextBlock}"
-        TextWrapping="Wrap"
-        VerticalAlignment="Center">
-      After a gentle alien becomes stranded on Earth, the being is discovered and befriended by a young boy named Elliott.
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" TextWrapping="Wrap" VerticalAlignment="Center">
+                            After a gentle alien becomes stranded on Earth, the being is discovered and befriended by a young boy named Elliott.
                         </TextBlock>
                     </StackPanel>
                     <Separator
@@ -262,8 +291,7 @@
                     </StackPanel>
                 </Grid>
             </materialDesign:Card>
+            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="AliceBlue"></TextBlock>
         </Grid>
-
-
     </Grid>
 </Window>

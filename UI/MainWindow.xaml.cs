@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,22 +18,73 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using MaterialDesignThemes.Wpf;
+using UI.Annotations;
 using UI.Logic;
 
 namespace UI
 {
+    public class MainWindowViewModel : INotifyPropertyChanged
+    {
+        private double _saveProgress;
+        public double SaveProgress
+        {
+            get { return _saveProgress; }
+            private set { this.MutateVerbose(ref _saveProgress, value, RaisePropertyChanged()); }
+        }
+        private bool _isSaving;
+        public bool IsSaving
+        {
+            get { return _isSaving; }
+            private set { this.MutateVerbose(ref _isSaving, value, RaisePropertyChanged()); }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
+        }
+
+        public void Init()
+        {
+            DateTime started= DateTime.Now;
+            
+            DispatcherTimer time= new DispatcherTimer();
+            IsSaving = true;
+            for (double i = 0.0; i <= 100.0; i++)
+            {
+                this.SaveProgress = i;
+                Thread.Sleep(50);
+            }
+
+            IsSaving = false;
+        }
+    }
+    public static class NotifyPropertyChangedExtension
+    {
+        public static void MutateVerbose<TField>(this INotifyPropertyChanged instance, ref TField field, TField newValue, Action<PropertyChangedEventArgs> raise, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<TField>.Default.Equals(field, newValue)) return;
+            field = newValue;
+            raise?.Invoke(new PropertyChangedEventArgs(propertyName));
+        }
+    }
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
     {
         private ThreadWorker _worker;
+        private MainWindowViewModel _viewModel;
         public MainWindow()
         {
             InitializeComponent();
             _worker = new ThreadWorker();
             _worker.Start();
-
+            _viewModel = new MainWindowViewModel();
+            DataContext = _viewModel;
         }
 
         //private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -125,5 +178,20 @@ namespace UI
         //    return n * Factorial(n - 1);
         //}
 
+        private void Start_To_Work_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                _viewModel.Init();
+            }).ContinueWith(t => { MessageBox.Show("Completed"); }, TaskScheduler.FromCurrentSynchronizationContext());
+            Task task = new
+                Task(() =>
+                {
+
+
+                });
+            task.Start();
+
+        }
     }
 }
