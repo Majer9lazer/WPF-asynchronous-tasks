@@ -137,7 +137,8 @@
                     Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                     Click="Start_To_Work_ButtonClick"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
-                    materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}">
+                    materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}"
+                    >
                     <!-- simple example of toggling/animating pack icon with a data trigger-->
                     <materialDesign:PackIcon
                     Height="24"
@@ -207,8 +208,8 @@
                         HorizontalAlignment="Center">
                        Task 2 result</TextBlock>
                     <Separator Grid.Row="2" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8 0 8 0" />
-                    <ScrollViewer Grid.Row="3" CanContentScroll="True" x:Name="Result1ContentScrollViewer">
-                        <TextBlock  Height="350"  Margin="8 4 8 0"
+                    <ScrollViewer  Height="350" Grid.Row="3"  x:Name="Result1ContentScrollViewer">
+                        <TextBlock   Margin="8 4 8 0"
                                    Text="{Binding Path=Task1ResultText}"
                                     TextWrapping="Wrap"
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
