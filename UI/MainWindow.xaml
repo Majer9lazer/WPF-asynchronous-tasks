@@ -208,8 +208,9 @@
                        Task 2 result</TextBlock>
                     <Separator Grid.Row="2" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8 0 8 0" />
                     <ScrollViewer Grid.Row="3" CanContentScroll="True" x:Name="Result1ContentScrollViewer">
-                        <TextBlock  MinHeight="350"  Margin="8 4 8 0"
+                        <TextBlock  Height="350"  Margin="8 4 8 0"
                                    Text="{Binding Path=Task1ResultText}"
+                                    TextWrapping="Wrap"
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
                     </ScrollViewer>
                     <Separator Grid.Row="4" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8,0,8,0"></Separator>
@@ -249,7 +250,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBox  Grid.Row="0" Margin="8,4,8,0"
-                        materialDesign:HintAssist.Hint="Time : 09:45:00 PM or click on time-icon"
+                        materialDesign:HintAssist.Hint="Time : 09:45:00 PM"
                                                 materialDesign:HintAssist.IsFloating="True"
                               AcceptsReturn="True"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"

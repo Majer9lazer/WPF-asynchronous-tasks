@@ -60,7 +60,8 @@ namespace UI.ViewModels
         public MainWindowViewModel()
         {
             // default value to test
-            // TimeToConvertInput = "09:45:12 PM";
+            //TimeToConvertInput = "09:45:12 PM";
+            //FactorialText = 22.ToString();
         }
         private FactorialHelper _factorialHelper = new FactorialHelper();
         private TimeConvertHelper _timeConvertHelper = new TimeConvertHelper();
@@ -76,24 +77,17 @@ namespace UI.ViewModels
         {
             try
             {
-                SaveProgress = 0.0;
                 IsSaving = true;
+                SaveProgress = 0;
+
                 Task factorialTask = new Task(GetFactorial);
                 factorialTask.Start();
 
                 Task convertTask = new Task(ConvertToMilitary);
                 convertTask.Start();
-                while (!factorialTask.IsCompleted)
-                {
-                    SaveProgress += 0.5;
-                    Thread.Sleep(10);
-                }
 
-                while (!convertTask.IsCompleted)
-                {
-                    SaveProgress += 0.5;
-                    Thread.Sleep(10);
-                }
+                Task.WhenAll(factorialTask, convertTask).GetAwaiter().GetResult();
+
             }
             catch (Exception e)
             {
@@ -116,18 +110,17 @@ namespace UI.ViewModels
 
                     IsSaving = true;
                     string convertedDate = _timeConvertHelper.ConvertToMilitary(TimeToConvertInput).ToString(CultureInfo.InvariantCulture);
-                    Thread.Sleep(500);
+                    SaveProgress += 10;
                     Task2ActionLog += $"Started to convert time to military of {TimeToConvertInput}\n";
-                    Thread.Sleep(500);
+                    Thread.Sleep(200);
+                    SaveProgress += 10;
                     Task2ResultText = $"Converted date = {convertedDate}";
-                    Thread.Sleep(500);
+                    Thread.Sleep(200);
+                    SaveProgress += 10;
                     Task2ActionLog += $"Started to write to log file\n";
-                    Task.Run(() =>
-                    {
-                        FileWriter.WriteToFileConvertedDate(TimeToConvertInput, convertedDate);
-                    });
-                    Thread.Sleep(500);
+                    FileWriter.WriteToFileConvertedDate(TimeToConvertInput, convertedDate);
                     Task2ActionLog += $"Completed to do work of thread 2 ";
+                    SaveProgress += 10;
                 }
                 else
                 {
@@ -153,26 +146,30 @@ namespace UI.ViewModels
                         IsSaving = true;
 
                         Task1ActionLog += $"Started to find factorial of {factorial}\n";
-                        Thread.Sleep(500);
-                        BigInteger factorialRes = _factorialHelper.Factorial(factorial);
-                        Thread.Sleep(500);
-                        Task1ResultText = $"!{factorial} = {factorialRes}";
-                        Thread.Sleep(500);
-                        Task1ActionLog += $"Started to write to log file\n";
-                        Thread.Sleep(500);
-                        Task.Run(() =>
+                        Thread.Sleep(200);
+                        SaveProgress += 10;
+                        // допустим что значение SaveProgress = 60 то результат = 40
+                        double elapsed = 90.0 - SaveProgress;
+                        for (byte i = 1; i <= factorial; i++)
                         {
-                            FileWriter.WriteToFileFactorial(factorialRes, factorial);
-                        });
-                        Thread.Sleep(500);
+                            BigInteger factorialRes = _factorialHelper.Factorial(i);
+                            Task1ResultText += $"!{i} = {factorialRes}\n";
+
+                            Task1ActionLog += $"Started to write {factorialRes} to log file\n";
+                            FileWriter.WriteToFileFactorial(factorialRes, i);
+
+                            SaveProgress += elapsed / factorial;
+
+                            Thread.Sleep(50);
+                        }
                         Task1ActionLog += $"Completed to do work of thread 1 ";
+                        SaveProgress += 10;
                     }
                     else
                     {
                         IsSaving = false;
                         Task1ResultText = "Your factorial num is bigger than 100 or less than 1 ";
                     }
-
                 }
                 else
                 {
