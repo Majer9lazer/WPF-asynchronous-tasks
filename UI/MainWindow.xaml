@@ -265,8 +265,8 @@
                         HorizontalAlignment="Center">
                        Task 3 result</TextBlock>
                     <Separator Grid.Row="2" Style="{StaticResource MaterialDesignDarkSeparator}" Margin="8 0 8 0" />
-                    <ScrollViewer Grid.Row="3" CanContentScroll="True" x:Name="Result2ContentScrollViewer">
-                        <TextBlock  MinHeight="350"  Margin="8 4 8 0"
+                    <ScrollViewer Grid.Row="3"  Height="350"  x:Name="Result2ContentScrollViewer">
+                        <TextBlock   Margin="8 4 8 0"
                                    Text="{Binding Path=Task2ResultText}"
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
                     </ScrollViewer>
