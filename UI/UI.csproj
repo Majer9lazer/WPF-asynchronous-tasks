@@ -93,6 +93,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="bin\Debug\UI.exe.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,6 +122,19 @@
       <Version>1.0.11</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="bin\Debug\ICSharpCode.AvalonEdit.dll" />
+    <Content Include="bin\Debug\MaterialDesignColors.dll" />
+    <Content Include="bin\Debug\MaterialDesignColors.pdb" />
+    <Content Include="bin\Debug\MaterialDesignThemes.Wpf.dll" />
+    <Content Include="bin\Debug\MaterialDesignThemes.Wpf.pdb" />
+    <Content Include="bin\Debug\ShowMeTheXAML.AvalonEdit.dll" />
+    <Content Include="bin\Debug\ShowMeTheXAML.dll" />
+    <Content Include="bin\Debug\UI.exe" />
+    <Content Include="bin\Debug\UI.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

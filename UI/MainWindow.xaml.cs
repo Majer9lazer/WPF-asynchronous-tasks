@@ -35,21 +35,26 @@ namespace UI
     {
         private ThreadWorker _worker;
         private MainWindowViewModel _viewModel;
+        private DispatcherTimer _timer;
         public MainWindow()
         {
             InitializeComponent();
             _worker = new ThreadWorker();
             _worker.Start();
             _viewModel = new MainWindowViewModel();
+            _timer= new DispatcherTimer();
             DataContext = _viewModel;
         }
 
 
 
+
         private void Start_To_Work_ButtonClick(object sender, RoutedEventArgs e)
         {
+
             Task.Factory.StartNew(() =>
             {
+                
                 _viewModel.Start();
             }).ContinueWith(t =>
             {
