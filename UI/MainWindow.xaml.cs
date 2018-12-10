@@ -42,24 +42,28 @@ namespace UI
             _worker = new ThreadWorker();
             _worker.Start();
             _viewModel = new MainWindowViewModel();
-            _timer= new DispatcherTimer();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(1);
+            _timer.Tick += _timer_Tick;
+            
             DataContext = _viewModel;
         }
 
-
-
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            
+        }
 
         private void Start_To_Work_ButtonClick(object sender, RoutedEventArgs e)
         {
-
             Task.Factory.StartNew(() =>
             {
-                
                 _viewModel.Start();
             }).ContinueWith(t =>
             {
-                    _viewModel.Finish();
+                _viewModel.Finish();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+
         }
     }
 }

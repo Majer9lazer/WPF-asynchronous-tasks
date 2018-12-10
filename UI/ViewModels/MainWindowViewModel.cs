@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using UI.Logic;
 
 namespace UI.ViewModels
@@ -16,40 +17,65 @@ namespace UI.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private double _saveProgress;
+
         public double SaveProgress
         {
             get { return _saveProgress; }
             private set { this.MutateVerbose(ref _saveProgress, value, RaisePropertyChanged()); }
         }
+
         private bool _isSaving;
+
         public bool IsSaving
         {
             get { return _isSaving; }
             private set { this.MutateVerbose(ref _isSaving, value, RaisePropertyChanged()); }
         }
+
         private string _factorialInput;
+
         public string FactorialText
         {
             get => _factorialInput;
             set => this.MutateVerbose(ref _factorialInput, value, RaisePropertyChanged());
         }
+
         private string _task1ResultText;
-        public string Task1ResultText { get => _task1ResultText; set => this.MutateVerbose(ref _task1ResultText, value, RaisePropertyChanged()); }
+
+        public string Task1ResultText
+        {
+            get => _task1ResultText;
+            set => this.MutateVerbose(ref _task1ResultText, value, RaisePropertyChanged());
+        }
+
         private string _task1ActionLog;
+
         public string Task1ActionLog
         {
             get => _task1ActionLog;
             set => this.MutateVerbose(ref _task1ActionLog, value, RaisePropertyChanged());
         }
+
         private string _task2ActionLog;
+
         public string Task2ActionLog
         {
             get => _task2ActionLog;
             set => this.MutateVerbose(ref _task2ActionLog, value, RaisePropertyChanged());
         }
+
         private string _timeToConvertInput;
         private string _task2ResultText;
-        public string Task2ResultText { get => _task2ResultText; set => this.MutateVerbose(ref _task2ResultText, value, RaisePropertyChanged()); }
+
+        public string Task2ResultText
+        {
+            get => _task2ResultText;
+            set => this.MutateVerbose(ref _task2ResultText, value, RaisePropertyChanged());
+        }
+
+        public const short TimeOut = 3000;
+        private DispatcherTimer _timer;
+        private byte _counter = 0;
 
         public string TimeToConvertInput
         {
@@ -63,6 +89,26 @@ namespace UI.ViewModels
             //TimeToConvertInput = "09:45:12 PM";
             //FactorialText = 22.ToString();
         }
+
+        public MainWindowViewModel(bool executeTimer, TimeSpan interval = default(TimeSpan))
+        {
+            if (executeTimer)
+            {
+                _counter = 0;
+                _timer = new DispatcherTimer(DispatcherPriority.ContextIdle);
+                _timer.Tick += _timer_Tick;
+                _timer.Interval = interval;
+            }
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            if (_counter >= TimeOut)
+                ((DispatcherTimer) sender).Stop();
+            else
+                _counter++;
+        }
+
         private FactorialHelper _factorialHelper = new FactorialHelper();
         private TimeConvertHelper _timeConvertHelper = new TimeConvertHelper();
 
@@ -87,7 +133,6 @@ namespace UI.ViewModels
                 convertTask.Start();
 
                 Task.WhenAll(factorialTask, convertTask).GetAwaiter().GetResult();
-
             }
             catch (Exception e)
             {
@@ -101,15 +146,16 @@ namespace UI.ViewModels
             SaveProgress = 100.0;
             IsSaving = false;
         }
+
         private void ConvertToMilitary()
         {
             try
             {
                 if (_timeConvertHelper.Check(TimeToConvertInput))
                 {
-
                     IsSaving = true;
-                    string convertedDate = _timeConvertHelper.ConvertToMilitary(TimeToConvertInput).ToString(CultureInfo.InvariantCulture);
+                    string convertedDate = _timeConvertHelper.ConvertToMilitary(TimeToConvertInput)
+                        .ToString(CultureInfo.InvariantCulture);
                     SaveProgress += 10;
                     Task2ActionLog += $"Started to convert time to military of {TimeToConvertInput}\n";
                     Thread.Sleep(200);
@@ -133,8 +179,8 @@ namespace UI.ViewModels
                 IsSaving = false;
                 Task2ActionLog = e.ToString();
             }
-
         }
+
         private void GetFactorial()
         {
             try
@@ -162,6 +208,7 @@ namespace UI.ViewModels
 
                             Thread.Sleep(50);
                         }
+
                         Task1ActionLog += $"Completed to do work of thread 1 ";
                         SaveProgress += 10;
                     }
@@ -174,7 +221,8 @@ namespace UI.ViewModels
                 else
                 {
                     IsSaving = false;
-                    Task1ResultText = "Your number contains string) or doesn't contains anything or your number bigger than 100";
+                    Task1ResultText =
+                        "Your number contains string) or doesn't contains anything or your number bigger than 100";
                 }
             }
             catch (Exception e)
@@ -182,13 +230,13 @@ namespace UI.ViewModels
                 IsSaving = false;
                 Task1ActionLog = e.ToString();
             }
-
         }
-
     }
+
     public static class NotifyPropertyChangedExtension
     {
-        public static void MutateVerbose<TField>(this INotifyPropertyChanged instance, ref TField field, TField newValue, Action<PropertyChangedEventArgs> raise, [CallerMemberName] string propertyName = null)
+        public static void MutateVerbose<TField>(this INotifyPropertyChanged instance, ref TField field,
+            TField newValue, Action<PropertyChangedEventArgs> raise, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<TField>.Default.Equals(field, newValue)) return;
             field = newValue;
