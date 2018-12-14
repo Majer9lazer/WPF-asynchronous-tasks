@@ -33,26 +33,16 @@ namespace UI
 
     public partial class MainWindow : Window
     {
-        private ThreadWorker _worker;
         private MainWindowViewModel _viewModel;
-        private DispatcherTimer _timer;
+
         public MainWindow()
         {
             InitializeComponent();
-            _worker = new ThreadWorker();
-            _worker.Start();
-            _viewModel = new MainWindowViewModel();
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(1);
-            _timer.Tick += _timer_Tick;
-            
+            _viewModel = new MainWindowViewModel(true, interval: TimeSpan.FromMilliseconds(1), timeOut: 250D);
             DataContext = _viewModel;
         }
 
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            
-        }
+
 
         private void Start_To_Work_ButtonClick(object sender, RoutedEventArgs e)
         {
@@ -64,6 +54,16 @@ namespace UI
                 _viewModel.Finish();
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
+        }
+
+        private void Factorial_Number_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.FactorialText = _viewModel.RandomFactorialNum().ToString();
+        }
+
+        private void WithSecondsTimePicker_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.TimeToConvertInput = _viewModel.GetRandomTime();
         }
     }
 }

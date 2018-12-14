@@ -1,3 +1,9 @@
 ﻿User = user , originalDate = 09:45:45 PM , convertedDate = 12/04/2018 21:45:45, time = 04.12.2018 21:50:30
 User = user , originalDate = 07:25:13 PM , convertedDate = 12/04/2018 19:25:13, time = 04.12.2018 22:01:52
 User = user , originalDate = 10:25:13 PM , convertedDate = 12/04/2018 22:25:13, time = 04.12.2018 22:02:40
+User = YSidoren , originalDate = 11:07:36 AM , convertedDate = 12/14/2018 11:07:36, time = 14.12.2018 14:48:52
+User = YSidoren , originalDate = 11:14:52 PM , convertedDate = 12/14/2018 23:14:52, time = 14.12.2018 14:50:14
+User = YSidoren , originalDate = 09:23:45 AM , convertedDate = 12/14/2018 09:23:45, time = 14.12.2018 14:50:25
+User = YSidoren , originalDate = 05:55:10 PM , convertedDate = 12/14/2018 17:55:10, time = 14.12.2018 14:51:08
+User = YSidoren , originalDate = 08:07:35 PM , convertedDate = 12/14/2018 20:07:35, time = 14.12.2018 14:51:36
+User = YSidoren , originalDate = 11:49:48 AM , convertedDate = 12/14/2018 11:49:48, time = 14.12.2018 14:52:56

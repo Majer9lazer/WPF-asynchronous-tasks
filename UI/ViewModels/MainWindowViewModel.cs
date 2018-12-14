@@ -16,12 +16,21 @@ namespace UI.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private Random _rnd = new Random();
         private double _saveProgress;
 
         public double SaveProgress
         {
             get { return _saveProgress; }
             private set { this.MutateVerbose(ref _saveProgress, value, RaisePropertyChanged()); }
+        }
+
+        private double _saveProgressMax;
+
+        public double SaveProgressMax
+        {
+            get => _saveProgressMax;
+            private set => this.MutateVerbose(ref _saveProgressMax, value, RaisePropertyChanged());
         }
 
         private bool _isSaving;
@@ -73,9 +82,7 @@ namespace UI.ViewModels
             set => this.MutateVerbose(ref _task2ResultText, value, RaisePropertyChanged());
         }
 
-        public const short TimeOut = 3000;
         private DispatcherTimer _timer;
-        private byte _counter = 0;
 
         public string TimeToConvertInput
         {
@@ -90,12 +97,12 @@ namespace UI.ViewModels
             //FactorialText = 22.ToString();
         }
 
-        public MainWindowViewModel(bool executeTimer, TimeSpan interval = default(TimeSpan))
+        public MainWindowViewModel(bool executeTimer, double timeOut = 3000, TimeSpan interval = default(TimeSpan))
         {
             if (executeTimer)
             {
-                _counter = 0;
-                _timer = new DispatcherTimer(DispatcherPriority.ContextIdle);
+                SaveProgressMax = timeOut;
+                _timer = new DispatcherTimer(DispatcherPriority.Background);
                 _timer.Tick += _timer_Tick;
                 _timer.Interval = interval;
             }
@@ -103,10 +110,10 @@ namespace UI.ViewModels
 
         private void _timer_Tick(object sender, EventArgs e)
         {
-            if (_counter >= TimeOut)
-                ((DispatcherTimer) sender).Stop();
+            if (SaveProgress >= SaveProgressMax)
+                ((DispatcherTimer)sender).Stop();
             else
-                _counter++;
+                SaveProgress++;
         }
 
         private FactorialHelper _factorialHelper = new FactorialHelper();
@@ -131,7 +138,7 @@ namespace UI.ViewModels
 
                 Task convertTask = new Task(ConvertToMilitary);
                 convertTask.Start();
-
+                _timer.Start();
                 Task.WhenAll(factorialTask, convertTask).GetAwaiter().GetResult();
             }
             catch (Exception e)
@@ -156,17 +163,12 @@ namespace UI.ViewModels
                     IsSaving = true;
                     string convertedDate = _timeConvertHelper.ConvertToMilitary(TimeToConvertInput)
                         .ToString(CultureInfo.InvariantCulture);
-                    SaveProgress += 10;
+
                     Task2ActionLog += $"Started to convert time to military of {TimeToConvertInput}\n";
-                    Thread.Sleep(200);
-                    SaveProgress += 10;
                     Task2ResultText = $"Converted date = {convertedDate}";
-                    Thread.Sleep(200);
-                    SaveProgress += 10;
                     Task2ActionLog += $"Started to write to log file\n";
                     FileWriter.WriteToFileConvertedDate(TimeToConvertInput, convertedDate);
                     Task2ActionLog += $"Completed to do work of thread 2 ";
-                    SaveProgress += 10;
                 }
                 else
                 {
@@ -192,10 +194,7 @@ namespace UI.ViewModels
                         IsSaving = true;
 
                         Task1ActionLog += $"Started to find factorial of {factorial}\n";
-                        Thread.Sleep(200);
-                        SaveProgress += 10;
-                        // допустим что значение SaveProgress = 60 то результат = 40
-                        double elapsed = 90.0 - SaveProgress;
+
                         for (byte i = 1; i <= factorial; i++)
                         {
                             BigInteger factorialRes = _factorialHelper.Factorial(i);
@@ -203,14 +202,10 @@ namespace UI.ViewModels
 
                             Task1ActionLog += $"Started to write {factorialRes} to log file\n";
                             FileWriter.WriteToFileFactorial(factorialRes, i);
-
-                            SaveProgress += elapsed / factorial;
-
                             Thread.Sleep(50);
                         }
 
                         Task1ActionLog += $"Completed to do work of thread 1 ";
-                        SaveProgress += 10;
                     }
                     else
                     {
@@ -230,6 +225,24 @@ namespace UI.ViewModels
                 IsSaving = false;
                 Task1ActionLog = e.ToString();
             }
+        }
+
+        public byte RandomFactorialNum() => (byte)_rnd.Next(1, 101);
+
+        public string GetRandomTime()
+        {
+            string date = "";
+            int randHour = _rnd.Next(0, 12);
+            string hours = randHour < 10 ? $"0{randHour}" : $"{randHour}";
+
+            int randMinutes = _rnd.Next(0, 60);
+            string minutes = randMinutes < 10 ? $"0{randMinutes}" : $"{randMinutes}";
+            int randSeconds = _rnd.Next(0, 60);
+            string seconds = randSeconds < 10 ? $"0{randSeconds}" : $"{randSeconds}";
+            int randTimePeriod = _rnd.Next(0, 2);
+            string timePeriod = randTimePeriod == 0 ? "AM" : "PM";
+            date = $"{hours}:{minutes}:{seconds} {timePeriod}";
+            return date;
         }
     }
 

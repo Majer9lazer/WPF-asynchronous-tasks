@@ -138,6 +138,7 @@
                     Click="Start_To_Work_ButtonClick"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
                     materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}"
+                    materialDesign:ButtonProgressAssist.Maximum="{Binding SaveProgressMax}"
                     >
                     <!-- simple example of toggling/animating pack icon with a data trigger-->
                     <materialDesign:PackIcon
@@ -199,7 +200,8 @@
                             AcceptsReturn="True"
                             TextWrapping="Wrap"
                             Text="{Binding FactorialText}"
-                            materialDesign:HintAssist.Hint="Factorial number from 1 to 100" />
+                            materialDesign:HintAssist.Hint="Factorial number from 1 to 100"
+                              MouseDoubleClick="Factorial_Number_DoubleClick"/>
 
                     <TextBlock
                         Grid.Row="1"
@@ -255,8 +257,9 @@
                                                 materialDesign:HintAssist.IsFloating="True"
                               AcceptsReturn="True"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                Text="{Binding Path=TimeToConvertInput}"
-                        x:Name="WithSecondsTimePicker"/>
+                              Text="{Binding Path=TimeToConvertInput}"
+                              x:Name="WithSecondsTimePicker"
+                              MouseDoubleClick="WithSecondsTimePicker_OnMouseDoubleClick"/>
                   
                     <TextBlock
                         Grid.Row="1"
